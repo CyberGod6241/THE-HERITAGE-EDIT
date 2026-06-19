@@ -59,21 +59,8 @@ export function truncate(text: string, maxLength: number): string {
 
 export function calculateDutyRate(country: string): number {
   const dutyRates: Record<string, number> = {
-    US: 0,
-    GB: 0.2,
-    DE: 0.19,
-    FR: 0.2,
-    IT: 0.22,
-    JP: 0.1,
-    AU: 0.1,
-    CA: 0.05,
-    AE: 0.05,
-    SG: 0.07,
-    CH: 0.077,
-    CN: 0.13,
-    KR: 0.1,
-    BR: 0.45,
-    IN: 0.18,
+    US: 0, GB: 0.2, DE: 0.19, FR: 0.2, IT: 0.22, JP: 0.1, AU: 0.1,
+    CA: 0.05, AE: 0.05, SG: 0.07, CH: 0.077, CN: 0.13, KR: 0.1, BR: 0.45, IN: 0.18,
   };
   return dutyRates[country] ?? 0.15;
 }
@@ -81,13 +68,7 @@ export function calculateDutyRate(country: string): number {
 export function calculateTaxRate(country: string, state?: string): number {
   if (country === "US") {
     const stateTax: Record<string, number> = {
-      CA: 0.0725,
-      NY: 0.08,
-      TX: 0.0625,
-      FL: 0.06,
-      IL: 0.0625,
-      WA: 0.065,
-      NJ: 0.06625,
+      CA: 0.0725, NY: 0.08, TX: 0.0625, FL: 0.06, IL: 0.0625, WA: 0.065, NJ: 0.06625,
     };
     return stateTax[state ?? ""] ?? 0.05;
   }
