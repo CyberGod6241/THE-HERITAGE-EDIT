@@ -1,12 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { generateHeritageNarrative } from "@/lib/heritage-ai";
+import { getCurrentUser } from "@/lib/auth";
 
 export async function POST(
   _request: NextRequest,
   { params }: { params: { id: string } },
 ) {
   try {
+    const user = await getCurrentUser();
+    if (!user || (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")) {
+      return NextResponse.json(
+        { error: "Admin access required" },
+        { status: 403 },
+      );
+    }
+
     const product = await prisma.product.findUnique({
       where: { id: params.id },
       include: { brand: true, category: true },

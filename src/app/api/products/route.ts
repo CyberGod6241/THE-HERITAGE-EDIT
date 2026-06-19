@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { createProductSchema } from "@/lib/validators";
 import { slugify, generateSKU } from "@/lib/utils";
 import { generateHeritageNarrative } from "@/lib/heritage-ai";
+import { getCurrentUser } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -125,6 +126,14 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const user = await getCurrentUser();
+    if (!user || (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")) {
+      return NextResponse.json(
+        { error: "Admin access required" },
+        { status: 403 },
+      );
+    }
+
     const body = await request.json();
     const parsed = createProductSchema.safeParse(body);
 
